@@ -53,7 +53,7 @@ namespace Classifieds.Web.Pages.Auth
                 {
                     //ver se a insercao das claims da api vai ser feita no nameidentifier
                     new Claim(ClaimTypes.NameIdentifier, Input.Email),
-                    new Claim(ClaimTypes.Name, "USERNAME HERE"),
+                    new Claim(ClaimTypes.Name, Input.Email),
                     new Claim(ClaimTypes.Role, "ROLE"),
                     new Claim("RandomDataPoint", "RandomValue")
                 };

@@ -38,7 +38,10 @@ namespace Classifieds.Web
             //services.AddControllersWithViews(q => q.Filters.Add(new AuthorizeFilter()));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(q=>q.LoginPath="/Auth/Login");
+                .AddCookie(q=>q.LoginPath="/Auth/Login")
+                .AddGoogle(o => { o.ClientId = ""; o.ClientSecret = ""; })
+                .AddMicrosoftAccount(o=> { o.ClientId="";o.ClientSecret = ""; })
+                .AddFacebook(o=> { o.ClientId = "";o.ClientSecret = ""; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
