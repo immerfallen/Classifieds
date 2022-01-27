@@ -1,4 +1,5 @@
 using Classifieds.Data;
+using Classifieds.Data.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +35,16 @@ namespace Classifieds.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
             );
+            services.AddDefaultIdentity<User>(opts => {
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireDigit = true;
+                opts.Password.RequiredLength = 8;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequireUppercase = true;
+                opts.SignIn.RequireConfirmedAccount = true;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             //o filter.add adiciona o filtro [Authorize] para todas as pages 
             services.AddRazorPages().AddMvcOptions(q=>q.Filters.Add(new AuthorizeFilter()));
