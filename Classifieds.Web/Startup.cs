@@ -1,5 +1,8 @@
 using Classifieds.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,11 +40,17 @@ namespace Classifieds.Web
             //para usar com mv, corpiar a linha abaixo
             //services.AddControllersWithViews(q => q.Filters.Add(new AuthorizeFilter()));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(q=>q.LoginPath="/Auth/Login")
-                .AddGoogle(o => { o.ClientId = ""; o.ClientSecret = ""; })
-                .AddMicrosoftAccount(o=> { o.ClientId="";o.ClientSecret = ""; })
-                .AddFacebook(o=> { o.ClientId = "";o.ClientSecret = ""; });
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                //o.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                //o.DefaultChallengeScheme = MicrosoftAccountDefaults.AuthenticationScheme;
+            })
+                .AddCookie(q => q.LoginPath = "/Auth/Login")
+                .AddGoogle(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
+        //        .AddMicrosoftAccount(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; })
+        //        .AddFacebook(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
