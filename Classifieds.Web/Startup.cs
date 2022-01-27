@@ -1,7 +1,9 @@
 using Classifieds.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +31,14 @@ namespace Classifieds.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
             );
 
-            services.AddRazorPages();
+            //o filter.add adiciona o filtro [Authorize] para todas as pages 
+            services.AddRazorPages().AddMvcOptions(q=>q.Filters.Add(new AuthorizeFilter()));
+
+            //para usar com mv, corpiar a linha abaixo
+            //services.AddControllersWithViews(q => q.Filters.Add(new AuthorizeFilter()));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(q=>q.LoginPath="/Auth/Login");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +60,7 @@ namespace Classifieds.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
