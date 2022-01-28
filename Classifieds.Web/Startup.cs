@@ -1,6 +1,7 @@
 using Classifieds.Data;
 using Classifieds.Data.Entities;
 using Classifieds.Web.Services;
+using Classifieds.Web.Services.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -39,14 +40,16 @@ namespace Classifieds.Web
             );
 
             services.AddTransient<IEmailSender>(s => new EmailSender("localhost", 25, "no-reply@classified.com"));
-            services.AddDefaultIdentity<User>(opts => {
-                opts.Password.RequireDigit = true;                
+            services.AddDefaultIdentity<User>(opts =>
+            {
+                opts.Password.RequireDigit = true;
                 opts.Password.RequiredLength = 8;
                 opts.Password.RequireNonAlphanumeric = true;
                 opts.Password.RequireUppercase = true;
                 opts.SignIn.RequireConfirmedAccount = true;
 
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddPasswordValidator<PasswordValidatorService>();
 
 
             //o filter.add adiciona o filtro [Authorize] para todas as pages 

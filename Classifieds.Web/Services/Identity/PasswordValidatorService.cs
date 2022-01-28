@@ -1,4 +1,4 @@
-using Classifieds.Data.Entities;
+ using Classifieds.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
