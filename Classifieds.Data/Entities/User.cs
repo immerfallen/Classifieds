@@ -10,11 +10,7 @@ namespace Classifieds.Data.Entities
     public class User : IdentityUser
     {
         public DateTime DateOfBirth { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
-
-        public int MyProperty { get; set; }
     }
 }

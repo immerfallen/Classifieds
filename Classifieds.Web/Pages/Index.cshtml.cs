@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Classifieds.Web.Pages
 {
     [AllowAnonymous]
+
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;

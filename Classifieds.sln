@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Web", "Classifi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Data", "Classifieds.Data\Classifieds.Data.csproj", "{647B54DD-F5F6-4D70-A26A-872A559F9E7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleAuthApp", "SmaplAuthApp\SampleAuthApp.csproj", "{C2716E47-B412-48C9-82B8-18BEDD0EF1DA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{647B54DD-F5F6-4D70-A26A-872A559F9E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647B54DD-F5F6-4D70-A26A-872A559F9E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647B54DD-F5F6-4D70-A26A-872A559F9E7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2716E47-B412-48C9-82B8-18BEDD0EF1DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2716E47-B412-48C9-82B8-18BEDD0EF1DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2716E47-B412-48C9-82B8-18BEDD0EF1DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2716E47-B412-48C9-82B8-18BEDD0EF1DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

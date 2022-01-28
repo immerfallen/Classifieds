@@ -36,8 +36,7 @@ namespace Classifieds.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
             );
             services.AddDefaultIdentity<User>(opts => {
-                opts.Password.RequireDigit = true;
-                opts.Password.RequireDigit = true;
+                opts.Password.RequireDigit = true;                
                 opts.Password.RequiredLength = 8;
                 opts.Password.RequireNonAlphanumeric = true;
                 opts.Password.RequireUppercase = true;
@@ -59,8 +58,8 @@ namespace Classifieds.Web
                 //o.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
                 //o.DefaultChallengeScheme = MicrosoftAccountDefaults.AuthenticationScheme;
             })
-                .AddCookie(q => q.LoginPath = "/Auth/Login")
-                .AddGoogle(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
+                .AddCookie(q => q.LoginPath = "/Auth/Login");
+                //.AddGoogle(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
         //        .AddMicrosoftAccount(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; })
         //        .AddFacebook(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
         }

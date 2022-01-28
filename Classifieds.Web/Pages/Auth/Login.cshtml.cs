@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +19,7 @@ namespace Classifieds.Web.Pages.Auth
     {
         [BindProperty]
         public InputModel Input { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [TempData]
@@ -35,9 +38,11 @@ namespace Classifieds.Web.Pages.Auth
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+
             ReturnUrl = returnUrl;
         }
 
@@ -45,23 +50,22 @@ namespace Classifieds.Web.Pages.Auth
         {
             returnUrl ??= Url.Content("~/");
 
-            //real database call to check if username and password are correct goes here!
-
-            if(Input.Email == "admin@test.com" && Input.Password == "maro")
+            //// Real database call to check if username and password are correct goes here!
+            if(Input.Email == "maro@gmail.com" && Input.Password == "Maro@2022")
             {
                 var claims = new List<Claim>
                 {
-                    //ver se a insercao das claims da api vai ser feita no nameidentifier
                     new Claim(ClaimTypes.NameIdentifier, Input.Email),
                     new Claim(ClaimTypes.Name, Input.Email),
                     new Claim(ClaimTypes.Role, "ROLE"),
-                    new Claim("RandomDataPoint", "RandomValue")
+                    new Claim("RandomDataPoint", "RandomValue"),
                 };
 
                 var identityUser = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identityUser);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = Input.RememberMe });
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                    new AuthenticationProperties { IsPersistent = Input.RememberMe });
 
                 return LocalRedirect(returnUrl);
             }

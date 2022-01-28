@@ -39,13 +39,13 @@
     </div>
     <div class="col-md-4">
         <p>Log In With</p>
-        <a asp-page-handler="LoginWithGoogle" asp-route-returnUrl="@Model.ReturnUrl">Login With Google</a> <br />
+        <a asp-page-handler="LoginWithGoogle" asp-route-returnUrl="@Model.ReturnUrl">Login With Google</a> <br/>
         <a asp-page-handler="LoginWithFacebook" asp-route-returnUrl="@Model.ReturnUrl">Login With Facebook</a> <br />
         <a asp-page-handler="LoginWithTwitter" asp-route-returnUrl="@Model.ReturnUrl">Login With Twitter</a> <br />
         <a asp-page-handler="LoginWithMicrosoft" asp-route-returnUrl="@Model.ReturnUrl">Login With Microsoft</a> <br />
     </div>
 </div>
 
-@section Scripts {
-<partial name="_ValidationScriptsPartial"/>
-}
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
