@@ -5,11 +5,11 @@ using Classifieds.Web.Services.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -40,29 +40,23 @@ namespace Classifieds.Web
             );
 
             services.AddTransient<IEmailSender>(s => new EmailSender("localhost", 25, "no-reply@classified.com"));
-            services.AddDefaultIdentity<User>(opts =>
+
+            services.AddDefaultIdentity<User>(options =>
             {
-                opts.Password.RequireDigit = true;
-                opts.Password.RequiredLength = 8;
-                opts.Password.RequireNonAlphanumeric = true;
-                opts.Password.RequireUppercase = true;
-                opts.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.SignIn.RequireConfirmedAccount = true;
 
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddPasswordValidator<PasswordValidatorService>();
-
-
-            //o filter.add adiciona o filtro [Authorize] para todas as pages 
-            services.AddRazorPages().AddMvcOptions(q=>q.Filters.Add(new AuthorizeFilter()));
-
-            //para usar com mvv copiar a linha abaixo
-            //services.AddControllersWithViews(q => q.Filters.Add(new AuthorizeFilter()));
-            services.AddAuthentication(o =>
-            {
-                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;               
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 3;
             })
-                .AddCookie(q => q.LoginPath = "/Auth/Login");
-              
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddPasswordValidator<PasswordValidatorService>();              
+            
+            services.AddRazorPages().AddMvcOptions(q => q.Filters.Add(new AuthorizeFilter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
