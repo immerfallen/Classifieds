@@ -1,5 +1,6 @@
 using Classifieds.Data;
 using Classifieds.Data.Entities;
+using Classifieds.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +37,8 @@ namespace Classifieds.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection"))
             );
+
+            services.AddTransient<IEmailSender>(s => new EmailSender("localhost", 25, "no-reply@classified.com"));
             services.AddDefaultIdentity<User>(opts => {
                 opts.Password.RequireDigit = true;                
                 opts.Password.RequiredLength = 8;
@@ -48,20 +52,14 @@ namespace Classifieds.Web
             //o filter.add adiciona o filtro [Authorize] para todas as pages 
             services.AddRazorPages().AddMvcOptions(q=>q.Filters.Add(new AuthorizeFilter()));
 
-            //para usar com mv, corpiar a linha abaixo
+            //para usar com mvv copiar a linha abaixo
             //services.AddControllersWithViews(q => q.Filters.Add(new AuthorizeFilter()));
-
             services.AddAuthentication(o =>
             {
-                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                //o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                //o.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-                //o.DefaultChallengeScheme = MicrosoftAccountDefaults.AuthenticationScheme;
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;               
             })
                 .AddCookie(q => q.LoginPath = "/Auth/Login");
-                //.AddGoogle(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
-        //        .AddMicrosoftAccount(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; })
-        //        .AddFacebook(o => { o.ClientId = Configuration["Google:ClientId"]; o.ClientSecret = Configuration["Google:ClientSecret"]; });
+              
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
