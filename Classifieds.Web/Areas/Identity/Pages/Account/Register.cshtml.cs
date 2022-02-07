@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Classifieds.Data.Constants;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Classifieds.Web.Areas.Identity.Pages.Account
 {
@@ -22,17 +24,15 @@ namespace Classifieds.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleInManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+        public RegisterModel(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleInManager, ILogger<RegisterModel> logger, IEmailSender emailSender)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
+            _userManager = userManager;
+            _roleInManager = roleInManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -50,6 +50,12 @@ namespace Classifieds.Web.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+           
+            public SelectList Roles { get; set; }
+
+            [Required]
+            public string Role { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -80,6 +86,7 @@ namespace Classifieds.Web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            Input = new InputModel() { Roles = new(_roleInManager.Roles.ToList(), "Name", "Name") };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -98,9 +105,13 @@ namespace Classifieds.Web.Areas.Identity.Pages.Account
                     LastName = Input.LastName
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //await _userManager.AddToRoleAsync(user, Role.Customer);
+                    await _userManager.AddToRoleAsync(user, Input.Role);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -130,6 +141,8 @@ namespace Classifieds.Web.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+
+            Input.Roles = new SelectList(_roleInManager.Roles.ToList(), "Name", "Name");
             return Page();
         }
     }
