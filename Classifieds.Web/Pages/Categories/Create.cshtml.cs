@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Classifieds.Data;
 using Classifieds.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Classifieds.Web.Pages.Categories
 {
-    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly Classifieds.Data.ApplicationDbContext _context;

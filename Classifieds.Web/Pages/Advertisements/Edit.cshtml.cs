@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Classifieds.Data;
 using Classifieds.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Classifieds.Web.Pages.Advertisements
 {
-    [Authorize]
     public class EditModel : PageModel
     {
         private readonly Classifieds.Data.ApplicationDbContext _context;
